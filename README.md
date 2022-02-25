@@ -1,6 +1,8 @@
 # Mandelbrot Explorer
 
-A WebGL based Mandelbrot Explorer, wrapped in a Webcomponent. 
+A WebGL based Mandelbrot Explorer, wrapped in a Webcomponent.
+
+:warning: **Disclaimer:** Because this is a WebGl Based implementation, the precision is limited. After about 10'000x Zoom the 32-bit-float precision limit is reached and the image falls appart.
 
 ## Usage
 ### Install
