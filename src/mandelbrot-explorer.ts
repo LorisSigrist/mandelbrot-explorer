@@ -22,11 +22,29 @@ export class MandelbrotExplorer extends LitElement {
       bottom: 1em;
       left: 1em;
 
-      padding: 1em;
-
       background-color: #fefefe;
-      border: 1px solid #aaa;
+      box-shadow:1px 1px 10px rgba(0,0,0,0.2);
       border-radius: 0.3em;
+
+      overflow: hidden;
+    }
+    .controls button {
+      display:block;
+      border:none;
+      background-color: none;
+
+      width:2em;
+      height:2em;
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
+      color: #333;
+    }
+
+    .controls button:disabled {
+      color: #aaa;
     }
   `
   //Size
@@ -198,6 +216,16 @@ export class MandelbrotExplorer extends LitElement {
     cancelAnimationFrame(this.frame)
   }
 
+  _increaseZoom(){
+    if(this.frozen) return;
+    this.zoom *= 1.2;
+  }
+
+  _decreaseZoom(){
+    if(this.frozen) return;
+    this.zoom /= 1.2;
+  }
+
   protected render () {
     return html`
       <canvas width=${this.width} height=${this.height}>
@@ -207,7 +235,8 @@ export class MandelbrotExplorer extends LitElement {
         this.controls,
         () => html`
           <div class="controls">
-            <span>Controls</span>
+            <button @click=${this._increaseZoom} ?disabled=${this.frozen}>+</button>
+            <button @click=${this._decreaseZoom} ?disabled=${this.frozen}>-</button>
           </div>
         `,
         () => html``

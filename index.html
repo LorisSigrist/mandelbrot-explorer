@@ -28,6 +28,9 @@
   <label>Controls</label>
   <input id="controls" type="checkbox" checked />
 
+  <label>Frozen</label>
+  <input id="frozen" type="checkbox" />
+
 
   <mandelbrot-explorer width="1000" height="500" controls/>
 
@@ -45,6 +48,7 @@
     const focalY = document.querySelector("#focalY")
     const iterations = document.querySelector("#iterations")
     const controls = document.querySelector("#controls")
+    const frozen = document.querySelector("#frozen")
 
     //React to Debug Control Changes
     zoom.oninput = e => {
@@ -67,6 +71,9 @@
       mandelbrot.controls = e.target.checked ?? false;
     }
 
+    frozen.oninput = e => {
+      mandelbrot.frozen = e.target.checked ?? false;
+    }
 
 
   </script>
