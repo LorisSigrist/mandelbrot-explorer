@@ -1,5 +1,7 @@
 import { html, css, LitElement } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
+import { when } from 'lit/directives/when.js'
+
 import vertexShaderCode from './shaders/vertexShader'
 import fragmentShaderCode from './shaders/fragmentShader'
 
@@ -13,6 +15,16 @@ export class MandelbrotExplorer extends LitElement {
   static styles = css`
     :host {
       display: inline-block;
+      transform: scale(1);
+    }
+    .controls {
+      position: absolute;
+      bottom: 1em;
+      left: 1em;
+
+      background-color: #fefefe;
+      border: 1px solid gray;
+      border-radius: 0.3em;
     }
   `
   //Size
@@ -118,7 +130,6 @@ export class MandelbrotExplorer extends LitElement {
   }
 
   private _rerender (): void {
-
     if (!this.gl) {
       console.error('Mandelbrot Explorer: Could not Rerender')
     }
@@ -161,11 +172,11 @@ export class MandelbrotExplorer extends LitElement {
     )
     this.gl.uniform1f(angleOffsetPosition, 0)
 
-	const iterationPosition = this.gl.getUniformLocation(
-		this.program,
-		'maxIterations'
-	  )
-	  this.gl.uniform1f(iterationPosition, this.iterations)
+    const iterationPosition = this.gl.getUniformLocation(
+      this.program,
+      'maxIterations'
+    )
+    this.gl.uniform1f(iterationPosition, this.iterations)
 
     this.gl.clearColor(0, 0, 1, 1)
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
@@ -190,6 +201,15 @@ export class MandelbrotExplorer extends LitElement {
       <canvas width=${this.width} height=${this.height}>
         <slot></slot>
       </canvas>
+      ${when(
+        this.controls,
+        () => html`
+          <div class="controls">
+            <span>Controls</span>
+          </div>
+        `,
+        () => html``
+      )}
     `
   }
 }
