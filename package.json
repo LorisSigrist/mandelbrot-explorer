@@ -1,6 +1,5 @@
 {
   "name": "@dijkstra/mandelbrot-explorer",
-  "private": true,
   "version": "0.0.1",
   "main": "dist/mandelbrot-explorer.es.js",
   "exports": {
