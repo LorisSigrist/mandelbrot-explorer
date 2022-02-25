@@ -11,9 +11,10 @@
 
 <body>
   <h1>Mandelbrot Explorer</h1>
+
+  <!--Debug Controls-->
   <label>Zoom</label>
   <input id="zoom" type="range" min="1" max="20" value="1" step="0.000001" />
-
 
   <label>Focal X</label>
   <input id="focalX" type="range" min="-2" max="2" value="0" step="0.000001" />
@@ -25,19 +26,25 @@
   <input id="iterations" type="range" min="1" max="1000" value="500" step="1" />
 
 
-  <mandelbrot-explorer style="display:block;" width="1000" height="500"/>
+  <mandelbrot-explorer style="display:block;" width="1000" height="500" />
+
+
+
   <span>After</span>
+
+
   <script>
     const mandelbrot = document.querySelector("mandelbrot-explorer")
 
-    //Debug Controls
+    //Get Debug Controls
     const zoom = document.querySelector("#zoom")
     const focalX = document.querySelector("#focalX")
     const focalY = document.querySelector("#focalY")
     const iterations = document.querySelector("#iterations")
 
+    //React to Debug Control Changes
     zoom.oninput = e => {
-      mandelbrot.zoom = Math.pow(2, e.target.value -1 ?? 1);
+      mandelbrot.zoom = Math.pow(2, e.target.value - 1 ?? 1);
     }
 
     focalX.oninput = e => {
@@ -52,7 +59,7 @@
       mandelbrot.iterations = e.target.value ?? 0;
     }
 
-    
+
 
   </script>
 </body>
