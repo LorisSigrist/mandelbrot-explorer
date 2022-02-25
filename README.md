@@ -2,7 +2,7 @@
 
 A WebGL based Mandelbrot Explorer, wrapped in a Webcomponent.
 
-:warning: **Disclaimer:** Because this is a WebGl Based implementation, the precision is limited. After about 1'000'000x Zoom the 32-bit-float precision limit is reached and the image falls appart.
+:warning: **Disclaimer:** Because this is a WebGl Based implementation, the precision is limited. After about 100'000x Zoom the 32-bit-float precision limit is reached and the image falls appart.
 
 ## Usage
 ### Install
