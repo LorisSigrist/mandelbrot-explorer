@@ -270,7 +270,7 @@ export class MandelbrotExplorer extends LitElement {
     for (let i = 0; i < this.pointers.length; i++) {
       if (e.pointerId == this.pointers[i].pointerId) {
 
-        this.focalX -= 2*(e.clientX - this.pointers[i].clientX)/this.zoom / this.width * window.devicePixelRatio;
+        this.focalX -= 2*(e.clientX - this.pointers[i].clientX)/this.zoom / this.height;
         this.focalY += 2*(e.clientY - this.pointers[i].clientY)/this.zoom /this.height;
         this.pointers[i] = e
         break
