@@ -60,3 +60,9 @@ On mobile Devices, user interactivity at a high iteration count can result in lo
 On Desktop it is basically always at 60+ fps.
 
 If you just want a still image, specify the frozen attribute to turn off all interactivity, causing no rerenders (unless attributes change). 
+
+
+If you want to keep interactivty, but have performance issues, try these steps:
+
+    1. Reduce number of iterations
+    2.Shrink Explorer Area
