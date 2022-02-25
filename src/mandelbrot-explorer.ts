@@ -39,6 +39,9 @@ export class MandelbrotExplorer extends LitElement {
   @property({ type: Number })
   zoom = 1
 
+  @property({ type: Number })
+  iterations = 500
+
   @query('canvas', true)
   canvas!: HTMLCanvasElement
 
@@ -157,6 +160,12 @@ export class MandelbrotExplorer extends LitElement {
       'angleOffset'
     )
     this.gl.uniform1f(angleOffsetPosition, 0)
+
+	const iterationPosition = this.gl.getUniformLocation(
+		this.program,
+		'maxIterations'
+	  )
+	  this.gl.uniform1f(iterationPosition, this.iterations)
 
     this.gl.clearColor(0, 0, 1, 1)
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)

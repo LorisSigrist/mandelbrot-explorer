@@ -17,6 +17,7 @@ Tag with all Attributes
         width=300  height=150 
         controls frozen
         zoom=1 focalX=0 focalY=0
+        iterations=500
     >
         <!--Fallback-->
     </mandelbrot-explorer>
@@ -29,3 +30,5 @@ Tag with all Attributes
 
 - zoom : Number, Zoom level of the Exporer, defaults to 1
 - focalX & focalY : Number, Specify the Viewport Center in the imaginary Plane. defautls to 0,0;
+
+- iterations: Number, how many times should the mandelbrot set be iterated (at most). Defaults to 500
