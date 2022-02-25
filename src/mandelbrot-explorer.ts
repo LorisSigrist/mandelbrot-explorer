@@ -27,7 +27,7 @@ export class MandelbrotExplorer extends LitElement {
       cursor: grab;
     }
 
-    :host(:not([frozen])) canvas.interacting{
+    :host(:not([frozen])) canvas.interacting {
       cursor: grabbing;
     }
 
@@ -237,27 +237,50 @@ export class MandelbrotExplorer extends LitElement {
     this.zoom /= 1.2
   }
 
-  
   @state()
-  interacting = false;
+  interacting = false
 
-  pointers = []
+  pointers: PointerEvent[] = []
 
-  _pointerStart () {
-    if(this.frozen) return;
-    this.interacting = true;
-    console.log("Pointer Start")
+  _pointerStart (e: PointerEvent) {
+    e.preventDefault()
+    if (this.frozen) return
+    this.interacting = true
+    this.pointers.push(e)
+
+    console.log('Pointer Down', e)
   }
-  _pointerEnd () {
-    console.log("Pointer End")
+  _pointerEnd (e: PointerEvent) {
+    e.preventDefault()
 
-    if(this.pointers.length == 0){
-      this.interacting = false;
+    const prevLen = this.pointers.length
+
+    //remove Pointer from Tracked Pointers
+    this.pointers = this.pointers.filter(pt => pt.pointerId !== e.pointerId)
+
+    if (prevLen !== this.pointers.length) {
+      console.log('Pointer End')
+    }
+
+    if (this.pointers.length < 1) {
+      this.interacting = false
     }
   }
-  _pointerMove () {
-    if(this.frozen) return;
-    console.log("Pointer Move")
+  _pointerMove (e: PointerEvent) {
+    e.preventDefault()
+    if (this.frozen) return
+
+    for (let i = 0; i < this.pointers.length; i++) {
+      if (e.pointerId == this.pointers[i].pointerId) {
+
+        this.focalX -= 2*(e.clientX - this.pointers[i].clientX)/this.zoom / this.width;
+        this.focalY += 2*(e.clientY - this.pointers[i].clientY)/this.zoom /this.height;
+        this.pointers[i] = e
+        break
+      }
+    }
+
+    console.log('Pointer Move')
   }
 
   protected render () {
@@ -265,12 +288,13 @@ export class MandelbrotExplorer extends LitElement {
       <canvas
         width=${this.width}
         height=${this.height}
-        class=${classMap({interacting: this.interacting})}
+        class=${classMap({ interacting: this.interacting })}
         @pointerdown=${this._pointerStart}
-        @pointerup=${this._pointerEnd}
-        @pointerexit=${this._pointerEnd}
-        @pointercancel=${this._pointerEnd}
         @pointermove=${this._pointerMove}
+        @pointerup=${this._pointerEnd}
+        @pointercancel=${this._pointerEnd}
+        @pointerout=${this._pointerEnd}
+        @pointerleave=${this._pointerEnd}
       >
         <slot></slot>
       </canvas>
