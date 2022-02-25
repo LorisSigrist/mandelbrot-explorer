@@ -9,8 +9,10 @@ A WebGL based Mandelbrot Explorer, wrapped in a Webcomponent. Documentation is b
  - [x] Mouse controls for panning
  - [x] Map controls for zooming
  - [x] Touch controls for panning & zooming
- - [ ] Color customization
  - [x] Respect Device Pixel Density
+ - [ ] Color customization
+ - [ ] Emmit Events in response to internal state change
+ - [ ] Touchpad Controls
 
 :warning: **Disclaimer:** Because this is a WebGl Based implementation, the precision is limited. After about 100'000x Zoom the 32-bit-float precision limit is reached and the image falls appart.
 
