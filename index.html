@@ -37,7 +37,7 @@
     const iterations = document.querySelector("#iterations")
 
     zoom.oninput = e => {
-      mandelbrot.zoom = Math.pow(2, e.target.value ?? 1);
+      mandelbrot.zoom = Math.pow(2, e.target.value -1 ?? 1);
     }
 
     focalX.oninput = e => {
