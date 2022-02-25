@@ -65,4 +65,4 @@ If you just want a still image, specify the frozen attribute to turn off all int
 If you want to keep interactivty, but have performance issues, try these steps:
 
     1. Reduce number of iterations
-    2.Shrink Explorer Area
+    2. Shrink Explorer Area
