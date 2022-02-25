@@ -1,6 +1,7 @@
 import { html, css, LitElement } from 'lit'
-import { customElement, property, query } from 'lit/decorators.js'
+import { customElement, property, query, state } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
+import { classMap } from 'lit/directives/class-map.js'
 
 import vertexShaderCode from './shaders/vertexShader'
 import fragmentShaderCode from './shaders/fragmentShader'
@@ -16,10 +17,18 @@ export class MandelbrotExplorer extends LitElement {
     :host {
       display: inline-block;
       transform: scale(1);
+    }
+
+    canvas {
+      touch-action: none;
+    }
+
+    :host(:not([frozen])) canvas {
       cursor: grab;
     }
-    :host([frozen]){
-      cursor: unset;
+
+    :host(:not([frozen])) canvas.interacting{
+      cursor: grabbing;
     }
 
     .controls {
@@ -28,22 +37,22 @@ export class MandelbrotExplorer extends LitElement {
       left: 1em;
 
       background-color: #fefefe;
-      box-shadow:1px 1px 10px rgba(0,0,0,0.2);
+      box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
       border-radius: 0.3em;
 
       overflow: hidden;
     }
     .controls button {
-      display:block;
-      border:none;
+      display: block;
+      border: none;
       background-color: none;
 
-      width:2em;
-      height:2em;
+      width: 2em;
+      height: 2em;
 
-      display:flex;
-      justify-content:center;
-      align-items:center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
       color: #333;
     }
@@ -217,36 +226,74 @@ export class MandelbrotExplorer extends LitElement {
     })
   }
 
-  disconnectedCallback (): void {
-    cancelAnimationFrame(this.frame)
+  //Controls
+  _increaseZoom () {
+    if (this.frozen) return
+    this.zoom *= 1.2
   }
 
-  _increaseZoom(){
-    if(this.frozen) return;
-    this.zoom *= 1.2;
+  _decreaseZoom () {
+    if (this.frozen) return
+    this.zoom /= 1.2
   }
 
-  _decreaseZoom(){
+  
+  @state()
+  interacting = false;
+
+  pointers = []
+
+  _pointerStart () {
     if(this.frozen) return;
-    this.zoom /= 1.2;
+    this.interacting = true;
+    console.log("Pointer Start")
+  }
+  _pointerEnd () {
+    console.log("Pointer End")
+
+    if(this.pointers.length == 0){
+      this.interacting = false;
+    }
+  }
+  _pointerMove () {
+    if(this.frozen) return;
+    console.log("Pointer Move")
   }
 
   protected render () {
     return html`
-      <canvas width=${this.width} height=${this.height}>
+      <canvas
+        width=${this.width}
+        height=${this.height}
+        class=${classMap({interacting: this.interacting})}
+        @pointerdown=${this._pointerStart}
+        @pointerup=${this._pointerEnd}
+        @pointerexit=${this._pointerEnd}
+        @pointercancel=${this._pointerEnd}
+        @pointermove=${this._pointerMove}
+      >
         <slot></slot>
       </canvas>
       ${when(
         this.controls,
         () => html`
           <div class="controls">
-            <button @click=${this._increaseZoom} ?disabled=${this.frozen}>+</button>
-            <button @click=${this._decreaseZoom} ?disabled=${this.frozen}>-</button>
+            <button @click=${this._increaseZoom} ?disabled=${this.frozen}>
+              +
+            </button>
+            <button @click=${this._decreaseZoom} ?disabled=${this.frozen}>
+              -
+            </button>
           </div>
         `,
         () => html``
       )}
     `
+  }
+
+  //Disconnect
+  disconnectedCallback (): void {
+    cancelAnimationFrame(this.frame)
   }
 }
 
