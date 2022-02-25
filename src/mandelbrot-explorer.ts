@@ -90,13 +90,14 @@ export class MandelbrotExplorer extends LitElement {
 
   private gl!: WebGLRenderingContext
 
-  private frame!: number
+  private frame: number | null = null;
 
   private program!: WebGLProgram
 
   protected firstUpdated (): void {
     this._initializeWebGL()
     this.frame = requestAnimationFrame(() => {
+      if(this.frame) return;
       this._rerender()
     })
   }
@@ -218,6 +219,7 @@ export class MandelbrotExplorer extends LitElement {
       this.height * window.devicePixelRatio
     )
     this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 0)
+      this.frame = null;
   }
 
   protected updated (): void {
@@ -225,6 +227,7 @@ export class MandelbrotExplorer extends LitElement {
 
     this.frame = requestAnimationFrame(() => {
       this._rerender()
+      if(this.frame) return;
     })
   }
 
@@ -357,6 +360,7 @@ export class MandelbrotExplorer extends LitElement {
 
   //Disconnect
   disconnectedCallback (): void {
+    if(!this.frame) return;
     cancelAnimationFrame(this.frame)
   }
 }
