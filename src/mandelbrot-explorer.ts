@@ -19,12 +19,9 @@ export class MandelbrotExplorer extends LitElement {
       transform: scale(1);
     }
 
-    canvas {
-      touch-action: none;
-    }
-
     :host(:not([frozen])) canvas {
       cursor: grab;
+      touch-action: none;
     }
 
     :host(:not([frozen])) canvas.interacting {
