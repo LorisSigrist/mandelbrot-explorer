@@ -52,27 +52,31 @@
 
     //React to Debug Control Changes
     zoom.oninput = e => {
-      mandelbrot.zoom = Math.pow(2, e.target.value - 1 ?? 1);
+      mandelbrot.setAttribute("zoom",  Math.pow(2, e.target.value - 1 ?? 1));
     }
 
     focalX.oninput = e => {
-      mandelbrot.focalX = e.target.value ?? 0;
+      mandelbrot.setAttribute("focalX", e.target.value ?? 0);
     }
 
     focalY.oninput = e => {
-      mandelbrot.focalY = e.target.value ?? 0;
+      mandelbrot.setAttribute("focalY", e.target.value ?? 0);
     }
 
     iterations.oninput = e => {
-      mandelbrot.iterations = e.target.value ?? 0;
+      mandelbrot.setAttribute("iterations", e.target.value ?? 0);
     }
 
     controls.oninput = e => {
-      mandelbrot.controls = e.target.checked ?? false;
+      e.target.checked ? 
+      mandelbrot.setAttribute("controls", "")
+      :mandelbrot.removeAttribute("controls")
     }
 
     frozen.oninput = e => {
-      mandelbrot.frozen = e.target.checked ?? false;
+      e.target.checked ? 
+      mandelbrot.setAttribute("frozen", "")
+      :mandelbrot.removeAttribute("frozen")
     }
 
 

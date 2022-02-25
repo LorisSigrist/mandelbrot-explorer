@@ -16,7 +16,12 @@ export class MandelbrotExplorer extends LitElement {
     :host {
       display: inline-block;
       transform: scale(1);
+      cursor: grab;
     }
+    :host([frozen]){
+      cursor: unset;
+    }
+
     .controls {
       position: absolute;
       bottom: 1em;
