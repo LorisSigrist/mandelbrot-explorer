@@ -2,7 +2,7 @@
 
 ![Mandelbrot Explorer image](/preview.png)
 
-A WebGL based Mandelbrot Explorer, wrapped in a Webcomponent. Documentation is below. Check out a demo [here](https://www.sigrst.dev/apps/mandelbrot-explorer).
+A WebGL based Mandelbrot Explorer, wrapped in a Webcomponent. Documentation is below. Check out a demo [here](https://www.sigrist.dev/apps/mandelbrot-explorer).
 
 ## Features
  - [x] Renders the mandelbrot set with an arbitrary ammount of iterations
