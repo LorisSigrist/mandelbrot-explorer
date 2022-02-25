@@ -115,7 +115,6 @@ export class MandelbrotExplorer extends LitElement {
   }
 
   private _rerender (): void {
-    console.log('Rerendering')
 
     if (!this.gl) {
       console.error('Mandelbrot Explorer: Could not Rerender')
@@ -168,7 +167,6 @@ export class MandelbrotExplorer extends LitElement {
   protected updated (): void {
     if (!this.hasUpdated) return
 
-    console.log('requesting Rerender')
     this.frame = requestAnimationFrame(() => {
       this._rerender()
     })
