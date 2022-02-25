@@ -22,8 +22,10 @@ export class MandelbrotExplorer extends LitElement {
       bottom: 1em;
       left: 1em;
 
+      padding: 1em;
+
       background-color: #fefefe;
-      border: 1px solid gray;
+      border: 1px solid #aaa;
       border-radius: 0.3em;
     }
   `
