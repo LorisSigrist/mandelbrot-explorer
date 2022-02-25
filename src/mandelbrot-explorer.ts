@@ -211,7 +211,12 @@ export class MandelbrotExplorer extends LitElement {
 
     this.gl.clearColor(0, 0, 1, 1)
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
-    this.gl.viewport(0, 0, this.width*window.devicePixelRatio, this.height*window.devicePixelRatio)
+    this.gl.viewport(
+      0,
+      0,
+      this.width * window.devicePixelRatio,
+      this.height * window.devicePixelRatio
+    )
     this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 0)
   }
 
@@ -263,17 +268,54 @@ export class MandelbrotExplorer extends LitElement {
       this.interacting = false
     }
   }
+
+  getDistanceBetweenTwoPointers (p1: PointerEvent, p2: PointerEvent): number {
+    return Math.hypot(p1.clientX - p2.clientX, p1.clientY - p2.clientY)
+  }
+
   _pointerMove (e: PointerEvent) {
     e.preventDefault()
     if (this.frozen) return
 
-    for (let i = 0; i < this.pointers.length; i++) {
-      if (e.pointerId == this.pointers[i].pointerId) {
+    //Pinching
+    if (this.pointers.length >= 2) {
+      const currentPinchDistance = this.getDistanceBetweenTwoPointers(
+        this.pointers[0],
+        this.pointers[1]
+      )
 
-        this.focalX -= 2*(e.clientX - this.pointers[i].clientX)/this.zoom / this.height;
-        this.focalY += 2*(e.clientY - this.pointers[i].clientY)/this.zoom /this.height;
-        this.pointers[i] = e
-        break
+      //Updating Pointer Position
+      for (let i = 0; i < this.pointers.length; i++) {
+        if (e.pointerId == this.pointers[i].pointerId) {
+          this.pointers[i] = e
+          break
+        }
+      }
+
+      const newPinchDistance = this.getDistanceBetweenTwoPointers(
+        this.pointers[0],
+        this.pointers[1]
+      )
+
+      this.zoom *= newPinchDistance / currentPinchDistance;
+
+
+    } else {
+      //Panning
+      for (let i = 0; i < this.pointers.length; i++) {
+        if (e.pointerId == this.pointers[i].pointerId) {
+          this.focalX -=
+            (2 * (e.clientX - this.pointers[i].clientX)) /
+            this.zoom /
+            this.height
+          this.focalY +=
+            (2 * (e.clientY - this.pointers[i].clientY)) /
+            this.zoom /
+            this.height
+
+          this.pointers[i] = e
+          break
+        }
       }
     }
 
@@ -283,8 +325,8 @@ export class MandelbrotExplorer extends LitElement {
   protected render () {
     return html`
       <canvas
-        width=${this.width*window.devicePixelRatio}
-        height=${this.height*window.devicePixelRatio}
+        width=${this.width * window.devicePixelRatio}
+        height=${this.height * window.devicePixelRatio}
         class=${classMap({ interacting: this.interacting })}
         @pointerdown=${this._pointerStart}
         @pointermove=${this._pointerMove}
@@ -292,7 +334,6 @@ export class MandelbrotExplorer extends LitElement {
         @pointercancel=${this._pointerEnd}
         @pointerout=${this._pointerEnd}
         @pointerleave=${this._pointerEnd}
-
         style="width: ${this.width}px; height:${this.height}px"
       >
         <slot></slot>
