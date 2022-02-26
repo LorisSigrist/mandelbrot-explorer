@@ -5,7 +5,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: 'src/mandelbrot-explorer.ts',
-      formats: ['es']
+      formats: ['es', 'umd'],
+      name: "mandelbrot-explorer"
     },
     rollupOptions: {
       external: /^lit/
